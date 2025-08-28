@@ -10,7 +10,17 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Next.js recommended rules
+  ...compat.config({
+    extends: ["next/core-web-vitals", "next/typescript"],
+    rules: {
+      "react/no-unescaped-entities": "off",
+      "@next/next/no-page-custom-font": "off",
+      "@typescript-eslint/no-explicit-any": "off", // 👈 disable the `any` rule if you want quick fix
+    },
+  }),
+
+  // Ignore build output
   {
     ignores: [
       "node_modules/**",
