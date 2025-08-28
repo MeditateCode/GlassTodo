@@ -23,7 +23,9 @@ export default function GlassTodo() {
 
   // Search & Filter
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
+  const [filter, setFilter] = useState<
+    "all" | "completed" | "pending" | "option1"
+  >("all");
   const [sortBy, setSortBy] = useState<"date" | "priority" | "none">("none");
 
   // Themes
@@ -97,6 +99,11 @@ export default function GlassTodo() {
   if (filter === "completed") displayedTodos = displayedTodos.filter((t) => t.completed);
   if (filter === "pending") displayedTodos = displayedTodos.filter((t) => !t.completed);
 
+  // Option1 → example: show only HIGH priority tasks
+  if (filter === "option1") {
+    displayedTodos = displayedTodos.filter((t) => t.priority === "high");
+  }
+
   if (sortBy === "priority") {
     const order = { high: 1, medium: 2, low: 3 };
     displayedTodos = [...displayedTodos].sort(
@@ -118,8 +125,9 @@ export default function GlassTodo() {
           <button
             key={t}
             onClick={() => setTheme(t)}
-            className={`w-6 h-6 rounded-full bg-gradient-to-r ${themes[t]} ${theme === t ? "ring-2 ring-white scale-110" : ""
-              } transition`}
+            className={`w-6 h-6 rounded-full bg-gradient-to-r ${themes[t]} ${
+              theme === t ? "ring-2 ring-white scale-110" : ""
+            } transition`}
           />
         ))}
       </div>
@@ -199,7 +207,9 @@ export default function GlassTodo() {
                     >
                       <span
                         onClick={() => toggleTodo(todo.id)}
-                        className={`${todo.completed ? "line-through opacity-60" : ""}`}
+                        className={`${
+                          todo.completed ? "line-through opacity-60" : ""
+                        }`}
                       >
                         {todo.text}
                       </span>
@@ -277,6 +287,7 @@ export default function GlassTodo() {
                   <option value="all">All</option>
                   <option value="completed">Completed ✅</option>
                   <option value="pending">Pending ⏳</option>
+                  <option value="option1">Option 1 (High Priority)</option>
                 </select>
                 <select
                   value={sortBy}
